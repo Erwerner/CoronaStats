@@ -4,6 +4,7 @@ import application.core.Row;
 import application.core.RowContent;
 import application.core.RowType;
 import application.mvc.ApplicationViewAccess;
+import helper.IO;
 import ui.template.Model;
 import ui.template.View;
 
@@ -31,20 +32,10 @@ public class ConsoleView extends View {
                 System.out.println(controllers.get(type).getDescription());
             }
 
-            String controllerSelection = readInputFor("Chose controller:");
+            String controllerSelection = IO.readInputFor("Chose controller:");
             for (ConsoleControllerType type : controllers.keySet())
                 if (type.toString().equals(controllerSelection))
                     controllers.get(type).execute();
-        }
-    }
-
-    private String readInputFor(String message) {
-        try {
-            System.out.println(message);
-            return new BufferedReader(new InputStreamReader(System.in)).readLine();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return "";
         }
     }
 
@@ -52,15 +43,15 @@ public class ConsoleView extends View {
     protected void initController() {
         controllers = new HashMap<>();
         controllers.put(ConsoleControllerType.EX, initExitController());
-        controllers.put(ConsoleControllerType.SL, initSelectController());
         controllers.put(ConsoleControllerType.AD, initAddController());
+        controllers.put(ConsoleControllerType.SL, initSelectController());
     }
 
     private ConsoleController initSelectController() {
         return new ConsoleController(model) {
             @Override
             public void execute() {
-                int cursor = Integer.parseInt(readInputFor("Select Row"));
+                int cursor = Integer.parseInt(IO.readInputFor("Select Row"));
                 getModel().setCursor(cursor);
             }
 
@@ -75,7 +66,9 @@ public class ConsoleView extends View {
         return new ConsoleController(model) {
             @Override
             public void execute() {
-                getModel().addRow(RowType.ALL, RowContent.DE);
+                RowType typeSelection = (RowType) IO.getEnumByInput("Choose RowType", RowType.values());
+                RowContent contentSelection = (RowContent) IO.getEnumByInput("Choose ContentType", RowContent.values());
+                getModel().addRow(typeSelection, contentSelection);
             }
 
             @Override
@@ -103,8 +96,8 @@ public class ConsoleView extends View {
     public void update() {
         ApplicationViewAccess model = getModel();
         Integer cursor = model.getCursor();
-        System.out.println("");
-        System.out.println("");
+        System.out.println();
+        System.out.println();
         System.out.println("Selected cursor [" + cursor + "]");
         List<Row> rows = model.getAdjustedRows();
         if (rows != null)
@@ -113,7 +106,7 @@ public class ConsoleView extends View {
                 for (Double point : row.getPoints()) {
                     System.out.print(point + ",");
                 }
-                System.out.println("");
+                System.out.println();
             }
         else
             System.out.println("[No Rows]");
