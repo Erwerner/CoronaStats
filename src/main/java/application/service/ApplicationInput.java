@@ -1,6 +1,8 @@
 package application.service;
 
-public abstract class ApplicationInput {
+import application.core.RowContent;
+import application.core.RowType;
 
-    public abstract boolean readValue();
+public interface ApplicationInput {
+    Double[] readPoints(RowType rowType, RowContent rowContent);
 }

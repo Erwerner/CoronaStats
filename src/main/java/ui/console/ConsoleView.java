@@ -13,7 +13,7 @@ public class ConsoleView extends View {
     }
 
     private void run() {
-        controller.execute();
+
     }
 
     @Override
@@ -23,7 +23,7 @@ public class ConsoleView extends View {
 
     @Override
     public void update() {
-        System.out.println(getModel().getValue());
+
     }
 
     private ApplicationViewAccess getModel() {

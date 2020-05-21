@@ -1,5 +1,11 @@
 package application.mvc;
 
+import application.core.Row;
+
+import java.util.List;
+
 public interface ApplicationViewAccess {
-    boolean getValue();
+    List<Row> getAdjustedRows();
+
+    Integer getCursor();
 }

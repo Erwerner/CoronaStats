@@ -10,9 +10,6 @@ public class ConsoleController extends Controller {
         super(model);
     }
 
-    public void execute() {
-        getModel().execute();
-    }
 
     private ApplicationControllerAccess getModel() {
         return (ApplicationControllerAccess) this.model;

@@ -1,5 +1,26 @@
 package application.mvc;
 
+import application.core.RowContent;
+import application.core.RowType;
+
 public interface ApplicationControllerAccess {
-    void execute();
+    void shiftCursor(int shift);
+
+    void cutRowsStart(int cut);
+
+    void cutRowsEnd(int cut);
+
+    void removeCursor();
+
+    void addRow(RowType rowType, RowContent valueType);
+
+    void resetRows();
+
+    void scaleCursor(Double faktor);
+
+    void export();
+
+    void syncRows();
+
+    void setCursor(int index);
 }
