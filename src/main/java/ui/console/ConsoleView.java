@@ -1,14 +1,21 @@
 package ui.console;
 
 import application.core.Row;
+import application.core.RowContent;
+import application.core.RowType;
 import application.mvc.ApplicationViewAccess;
 import ui.template.Model;
 import ui.template.View;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.HashMap;
 import java.util.List;
 
 public class ConsoleView extends View {
-    private ConsoleController controller;
+    private HashMap<ConsoleControllerType, ConsoleController> controllers;
+    private boolean active = true;
 
     public ConsoleView(Model model) {
         super(model);
@@ -17,13 +24,79 @@ public class ConsoleView extends View {
 
     private void run() {
         update();
-        controller.addRow();
-        controller.setCursor();
+
+        while (active) {
+            for (ConsoleControllerType type : controllers.keySet()) {
+                System.out.print("[" + type + "] ");
+                System.out.println(controllers.get(type).getDescription());
+            }
+
+            String controllerSelection = readInputFor("Chose controller:");
+            for (ConsoleControllerType type : controllers.keySet())
+                if (type.toString().equals(controllerSelection))
+                    controllers.get(type).execute();
+        }
+    }
+
+    private String readInputFor(String message) {
+        try {
+            System.out.println(message);
+            return new BufferedReader(new InputStreamReader(System.in)).readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "";
+        }
     }
 
     @Override
     protected void initController() {
-        controller = new ConsoleController(model);
+        controllers = new HashMap<>();
+        controllers.put(ConsoleControllerType.EX, initExitController());
+        controllers.put(ConsoleControllerType.SL, initSelectController());
+        controllers.put(ConsoleControllerType.AD, initAddController());
+    }
+
+    private ConsoleController initSelectController() {
+        return new ConsoleController(model) {
+            @Override
+            public void execute() {
+                int cursor = Integer.parseInt(readInputFor("Select Row"));
+                getModel().setCursor(cursor);
+            }
+
+            @Override
+            public String getDescription() {
+                return "Select Row";
+            }
+        };
+    }
+
+    private ConsoleController initAddController() {
+        return new ConsoleController(model) {
+            @Override
+            public void execute() {
+                getModel().addRow(RowType.ALL, RowContent.DE);
+            }
+
+            @Override
+            public String getDescription() {
+                return "Add Row";
+            }
+        };
+    }
+
+    private ConsoleController initExitController() {
+        return new ConsoleController(model) {
+            @Override
+            public void execute() {
+                active = false;
+            }
+
+            @Override
+            public String getDescription() {
+                return "Exit";
+            }
+        };
     }
 
     @Override
