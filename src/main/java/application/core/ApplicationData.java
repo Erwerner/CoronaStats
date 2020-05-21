@@ -1,11 +1,12 @@
 package application.core;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ApplicationData {
-    private List<Row> rows;
-    private List<Double> scales;
-    private List<Integer> shifts;
+    private final List<Row> rows = new ArrayList<>();
+    private final List<Double> scales = new ArrayList<>();
+    private final List<Integer> shifts = new ArrayList<>();
     int cutStart;
     int cutEnd;
 
@@ -62,4 +63,13 @@ public class ApplicationData {
         }
     }
 
+    public void addRow(Row row) {
+        rows.add(row);
+        shifts.add(0);
+        scales.add(0.0);
+    }
+
+    public Row getRow(int index) {
+        return rows.get(index);
+    }
 }

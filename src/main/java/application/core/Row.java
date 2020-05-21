@@ -16,4 +16,16 @@ public class Row {
     public Integer getHighPointIdx() {
         return null;
     }
+
+    public RowType getRowType() {
+        return rowType;
+    }
+
+    public RowContent getRowContent() {
+        return rowContent;
+    }
+
+    public List<Double> getPoints() {
+        return points;
+    }
 }

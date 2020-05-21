@@ -5,6 +5,8 @@ import application.core.Row;
 import application.core.RowContent;
 import application.core.RowType;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ApplicationService {
@@ -15,7 +17,11 @@ public class ApplicationService {
     }
 
     public List<Row> calcAdjustedRows(ApplicationData data) {
-        return null;
+        ArrayList<Row> rows = new ArrayList<>();
+        for (int i = 0; i <= data.getRowCount() - 1; i++) {
+            rows.add(data.getRow(i));
+        }
+        return rows;
     }
 
     public void syncRows(ApplicationData data) {
@@ -23,6 +29,7 @@ public class ApplicationService {
     }
 
     public void addRow(ApplicationData data, RowType rowType, RowContent rowContent) {
-
+        Double[] points = input.readPoints(rowType, rowContent);
+        data.addRow(new Row(rowType, rowContent, Arrays.asList(points)));
     }
 }

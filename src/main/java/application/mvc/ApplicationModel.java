@@ -88,6 +88,7 @@ public class ApplicationModel extends Model implements ApplicationControllerAcce
 
     @Override
     public void setCursor(int index) {
-
+        cursor = index;
+        notifyViews();
     }
 }

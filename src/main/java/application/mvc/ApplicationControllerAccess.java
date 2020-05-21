@@ -12,7 +12,7 @@ public interface ApplicationControllerAccess {
 
     void removeCursor();
 
-    void addRow(RowType rowType, RowContent valueType);
+    void addRow(RowType rowType, RowContent rowContent);
 
     void resetRows();
 
