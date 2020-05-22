@@ -23,4 +23,6 @@ public interface ApplicationControllerAccess {
     void syncRows();
 
     void setCursor(int index);
+
+    void scaleLast();
 }

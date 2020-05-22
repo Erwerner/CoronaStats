@@ -94,4 +94,9 @@ public class ApplicationModel extends Model implements ApplicationControllerAcce
         cursor = index;
         notifyViews();
     }
+
+    @Override
+    public void scaleLast() {
+        service.sycaleLast(data);
+    }
 }

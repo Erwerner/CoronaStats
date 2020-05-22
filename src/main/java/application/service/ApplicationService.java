@@ -60,4 +60,11 @@ public class ApplicationService {
         Double[] points = input.readPoints(rowType, rowContent);
         data.addRow(new Row(rowType, rowContent, Arrays.asList(points)));
     }
+
+    public void sycaleLast(ApplicationData data) {
+        data.reset();
+        Row syncRow = data.getRow(0);
+        for (int rowIndex = 1; rowIndex <= data.getRowCount() - 1; rowIndex++)
+            data.setScale(rowIndex, syncRow.getPoints().get(0) / data.getRow(rowIndex).getPoints().get(0));
+    }
 }

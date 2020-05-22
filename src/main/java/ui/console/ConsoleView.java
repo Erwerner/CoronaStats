@@ -1,6 +1,9 @@
 package ui.console;
 
 import application.core.Row;
+import application.core.RowContent;
+import application.core.RowType;
+import application.mvc.ApplicationControllerAccess;
 import application.mvc.ApplicationViewAccess;
 import helper.IO;
 import ui.template.Model;
@@ -8,6 +11,8 @@ import ui.template.View;
 
 import java.util.HashMap;
 import java.util.List;
+
+import static ui.console.ConsoleControllerType.*;
 
 public class ConsoleView extends View {
     private HashMap<ConsoleControllerType, ConsoleController> controllers;
@@ -20,9 +25,13 @@ public class ConsoleView extends View {
 
     private void run() {
         update();
-
+        ((ApplicationControllerAccess) model).addRow(RowType.ACT, RowContent.SW);
+        ((ApplicationControllerAccess) model).addRow(RowType.ACT, RowContent.DE);
+ //       ((ApplicationControllerAccess) model).scaleLast();
+        ((ApplicationControllerAccess) model).syncRows();
+        ((ApplicationControllerAccess) model).export();
         while (active) {
-            ConsoleControllerType selection = (ConsoleControllerType) IO.getEnumByInput("Choose Controller", ConsoleControllerType.values());
+            ConsoleControllerType selection = (ConsoleControllerType) IO.getEnumByInput("Choose Controller", values());
             controllers.get(selection).execute();
         }
     }
@@ -31,17 +40,17 @@ public class ConsoleView extends View {
     protected void initController() {
         ConsoleControllerFactory controllerFactory = new ConsoleControllerFactory();
         controllers = new HashMap<>();
-        controllers.put(ConsoleControllerType.EXIT, initExitController());
-        controllers.put(ConsoleControllerType.ADD, controllerFactory.initAddController(model));
-        controllers.put(ConsoleControllerType.SELC, controllerFactory.initSelectController(model));
-        controllers.put(ConsoleControllerType.SYNC, controllerFactory.initSyncController(model));
-        controllers.put(ConsoleControllerType.SHFT, controllerFactory.initShiftController(model));
-        controllers.put(ConsoleControllerType.CUTS, controllerFactory.initCutStartController(model));
-        controllers.put(ConsoleControllerType.CUTE, controllerFactory.initCutEndController(model));
-        controllers.put(ConsoleControllerType.REMV, controllerFactory.initRemoveController(model));
-        controllers.put(ConsoleControllerType.RSET, controllerFactory.initResetController(model));
-        controllers.put(ConsoleControllerType.SCAL, controllerFactory.initScaleController(model));
-        controllers.put(ConsoleControllerType.EXP, controllerFactory.initExportController(model));
+        controllers.put(EXIT, initExitController());
+        controllers.put(ADD, controllerFactory.initAddController(model));
+        controllers.put(SELC, controllerFactory.initSelectController(model));
+        controllers.put(SYNC, controllerFactory.initSyncController(model));
+        controllers.put(SHFT, controllerFactory.initShiftController(model));
+        controllers.put(CUTS, controllerFactory.initCutStartController(model));
+        controllers.put(CUTE, controllerFactory.initCutEndController(model));
+        controllers.put(REMV, controllerFactory.initRemoveController(model));
+        controllers.put(RSET, controllerFactory.initResetController(model));
+        controllers.put(SCAL, controllerFactory.initScaleController(model));
+        controllers.put(EXP, controllerFactory.initExportController(model));
     }
 
 

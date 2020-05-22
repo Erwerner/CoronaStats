@@ -12,6 +12,9 @@ import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.impl.client.HttpClients;
 
 import java.io.IOException;
+import java.util.ArrayList;
+
+import static application.core.RowType.*;
 
 public class InfrastructureInput implements ApplicationInput {
 
@@ -19,7 +22,32 @@ public class InfrastructureInput implements ApplicationInput {
 
     @Override
     public Double[] readPoints(RowType rowType, RowContent rowContent) {
-        HttpClient client = HttpClients.custom().build();
+        String country = "";
+        switch (rowContent) {
+            case DE:
+                country = "Germany";
+                break;
+            case SW:
+                country = "Switzerland";
+                break;
+        }
+        if (rowType == ACT)
+            return getActiveFromAPI(country);
+        else
+            return getPointsFromApi(country, rowType);
+    }
+
+    private Double[] getActiveFromAPI(String country) {
+        Double[] confirmed = getPointsFromApi(country, CFM);
+        Double[] deaths = getPointsFromApi(country, DTH);
+        Double[] recovered = getPointsFromApi(country, RCV);
+        ArrayList<Double> points = new ArrayList<>();
+        for (int i = 0; i <= confirmed.length - 1; i++)
+            points.add(confirmed[i] - recovered[i] - deaths[i]);
+        return points.toArray(new Double[0]);
+    }
+
+    private Double[] getPointsFromApi(String country, RowType rowType) {
         String status = "";
         switch (rowType) {
             case RCV:
@@ -31,16 +59,10 @@ public class InfrastructureInput implements ApplicationInput {
             case CFM:
                 status = "Confirmed";
                 break;
+            case ACT:
+                throw new RuntimeException();
         }
-        String country = "";
-        switch (rowContent) {
-            case DE:
-                country = "Germany";
-                break;
-            case SW:
-                country = "Switzerland";
-                break;
-        }
+        HttpClient client = HttpClients.custom().build();
         HttpUriRequest request = RequestBuilder.get()
                 .setUri("https://covid-api.mmediagroup.fr/v1/history?country=" + country + "&status=" + status)
                 .setHeader(HttpHeaders.ACCEPT, "*/*")
