@@ -14,7 +14,13 @@ public class Row {
     }
 
     public Integer getHighPointIdx() {
-        return null;
+        Integer index = 0;
+        for (int i = 0; i <= points.size(); i++) {
+            if (points.get(i) > points.get(index))
+                index = i;
+
+        }
+        return index;
     }
 
     public RowType getRowType() {
