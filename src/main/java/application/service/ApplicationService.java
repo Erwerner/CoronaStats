@@ -22,13 +22,15 @@ public class ApplicationService {
             Row row = data.getRow(rowIndex);
             List<Double> adjustedPoints = new ArrayList<>();
 
-            for (int shift = data.getShift(rowIndex); shift < 0; shift++)
+            for (int shift = 1; shift <= data.getShift(rowIndex); shift++)
                 adjustedPoints.add(0.0);
 
-            adjustedPoints.addAll(row.getPoints());
+
+            for (Double point : row.getPoints())
+                adjustedPoints.add(point * data.getScale(rowIndex));
 
             if (adjustedPoints.size() > 0) {
-                for (int shift = 1; shift <= data.getShift(rowIndex); shift++)
+                for (int shift = data.getShift(rowIndex); shift < 0; shift++)
                     adjustedPoints.remove(0);
                 for (int cut = 1; cut <= data.getCutStart(); cut++)
                     adjustedPoints.remove(0);
@@ -42,7 +44,16 @@ public class ApplicationService {
     }
 
     public void syncRows(ApplicationData data) {
-
+        data.reset();
+        Row syncRow = data.getRow(0);
+        int syncIndex = syncRow.getHighPointIdx();
+        Double syncValue = syncRow.getPoints().get(syncIndex);
+        for (int rowIndex = 1; rowIndex <= data.getRowCount() - 1; rowIndex++) {
+            int rowHighPointIndex = data.getRow(rowIndex).getHighPointIdx();
+            data.setShift(rowIndex, syncIndex - rowHighPointIndex);
+            Double maxRowVlaue = data.getRow(rowIndex).getPoints().get(rowHighPointIndex);
+            data.setScale(rowIndex, syncValue / maxRowVlaue);
+        }
     }
 
     public void addRow(ApplicationData data, RowType rowType, RowContent rowContent) {

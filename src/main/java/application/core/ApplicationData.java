@@ -58,7 +58,7 @@ public class ApplicationData {
         scales.clear();
         shifts.clear();
         for (int i = 0; i <= getRowCount(); i++) {
-            scales.add(0.0);
+            scales.add(1.0);
             shifts.add(0);
         }
     }
@@ -66,7 +66,7 @@ public class ApplicationData {
     public void addRow(Row row) {
         rows.add(row);
         shifts.add(0);
-        scales.add(0.0);
+        scales.add(1.0);
     }
 
     public Row getRow(int index) {
