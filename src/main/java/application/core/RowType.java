@@ -1,5 +1,5 @@
 package application.core;
 
 public enum RowType {
-    ALL
+    RCV, DTH, CFM
 }
