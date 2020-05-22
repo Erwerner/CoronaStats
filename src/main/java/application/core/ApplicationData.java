@@ -47,9 +47,9 @@ public class ApplicationData {
     }
 
     public void removeIndex(Integer index) {
-        rows.remove(index);
-        scales.remove(index);
-        shifts.remove(index);
+        rows.remove((int) index);
+        scales.remove((int) index);
+        shifts.remove((int) index);
     }
 
     public void reset() {

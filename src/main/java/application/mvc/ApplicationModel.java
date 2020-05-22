@@ -6,6 +6,7 @@ import application.core.RowContent;
 import application.core.RowType;
 import application.service.ApplicationInput;
 import application.service.ApplicationService;
+import application.service.Exporter;
 import ui.template.Model;
 
 import java.util.List;
@@ -77,7 +78,8 @@ public class ApplicationModel extends Model implements ApplicationControllerAcce
 
     @Override
     public void export() {
-
+        List<Row> rows = service.calcAdjustedRows(data);
+        new Exporter().export(rows);
         notifyViews();
     }
 

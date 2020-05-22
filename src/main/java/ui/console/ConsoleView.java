@@ -41,6 +41,7 @@ public class ConsoleView extends View {
         controllers.put(ConsoleControllerType.REMV, controllerFactory.initRemoveController(model));
         controllers.put(ConsoleControllerType.RSET, controllerFactory.initResetController(model));
         controllers.put(ConsoleControllerType.SCAL, controllerFactory.initScaleController(model));
+        controllers.put(ConsoleControllerType.EXP, controllerFactory.initExportController(model));
     }
 
 

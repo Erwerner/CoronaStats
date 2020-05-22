@@ -94,4 +94,13 @@ public class ConsoleControllerFactory {
             }
         };
     }
+
+    public ConsoleController initExportController(Model model) {
+        return new ConsoleController(model) {
+            @Override
+            public void execute() {
+                getModel().export();
+            }
+        };
+    }
 }
