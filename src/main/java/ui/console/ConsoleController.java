@@ -13,7 +13,6 @@ public abstract class ConsoleController extends Controller {
     }
 
     public abstract void execute();
-    public abstract String getDescription();
 
     protected ApplicationControllerAccess getModel() {
         return (ApplicationControllerAccess) this.model;

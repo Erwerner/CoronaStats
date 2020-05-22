@@ -7,25 +7,19 @@ import java.io.InputStreamReader;
 public class IO {
     public static Object getEnumByInput(String inputMessage, Object[] values) {
         System.out.println(inputMessage);
-        Object typeSelection = null;
-        while (typeSelection == null) {
+        while (true) {
             for (Object type : values)
-                System.out.println(type);
-            String inputType = null;
+                System.out.println("[" + type + "]");
             try {
-                inputType = new BufferedReader(new InputStreamReader(System.in)).readLine();
+                String inputType = new BufferedReader(new InputStreamReader(System.in)).readLine();
                 for (Object type : values)
-                    if (type.toString().equals(inputType)) {
-                        typeSelection = type;
-                        continue;
-                    }
+                    if (type.toString().equals(inputType))
+                        return type;
             } catch (IOException e) {
                 e.printStackTrace();
             }
             System.out.println("Invalid");
         }
-
-        return typeSelection;
     }
 
     public static String readInputFor(String inputMessage) {

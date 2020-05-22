@@ -1,5 +1,5 @@
 package ui.console;
 
 public enum ConsoleControllerType {
-    AD, EX, SL
+    ADD, EXIT, SELC, SHFT, CUTS, CUTE, REMV, RSET, SCAL, SYNC
 }

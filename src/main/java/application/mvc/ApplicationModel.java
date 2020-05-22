@@ -53,6 +53,7 @@ public class ApplicationModel extends Model implements ApplicationControllerAcce
     @Override
     public void removeCursor() {
         data.removeIndex(cursor);
+        cursor = null;
         notifyViews();
     }
 
