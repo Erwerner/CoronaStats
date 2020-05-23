@@ -1,5 +1,5 @@
 package application.core;
 
 public enum RowContent {
-    DE, SW
+    DE, SZ, SW, UK, TK, SP
 }

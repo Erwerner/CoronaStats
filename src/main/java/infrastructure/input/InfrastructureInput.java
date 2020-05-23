@@ -27,8 +27,20 @@ public class InfrastructureInput implements ApplicationInput {
             case DE:
                 country = "Germany";
                 break;
-            case SW:
+            case SZ:
                 country = "Switzerland";
+                break;
+            case SP:
+                country = "Spain";
+                break;
+            case SW:
+                country = "Sweden";
+                break;
+            case UK:
+                country = "United Kingdom";
+                break;
+            case TK:
+                country = "Turkey";
                 break;
         }
         if (rowType == ACT)

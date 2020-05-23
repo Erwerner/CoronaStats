@@ -1,9 +1,8 @@
 package helper;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class IO {
     public static Object getEnumByInput(String inputMessage, Object[] values) {
@@ -46,5 +45,40 @@ public class IO {
         }
 
         return resultStringBuilder.toString();
+    }
+
+
+    public static void persistString(String output, String fileName, String foldername) {
+        if (!pathExists(foldername))
+            createFolder(foldername);
+        try (java.io.FileWriter file = new java.io.FileWriter(foldername + "/" + fileName)) {
+            file.write(output);
+            file.flush();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static boolean pathExists(String path) {
+        return Files.exists(Paths.get(path));
+    }
+
+    public static void createFolder(String foldername) {
+        String path = "";
+        String[] folders = foldername.split("/");
+        for (String folderpath : folders) {
+            path += folderpath + "/";
+            new File(path).mkdir();
+        }
+    }
+
+    public static String getPersistedString(String filename, String folder) {
+        String folderpath = (folder + "/").replace("//", "");
+        try {
+            return IO.readFromInputStream(new FileInputStream(new File(folderpath + filename)));
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException();
+        }
     }
 }

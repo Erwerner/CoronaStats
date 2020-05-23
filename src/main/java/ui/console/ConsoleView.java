@@ -25,7 +25,7 @@ public class ConsoleView extends View {
 
     private void run() {
         update();
-        ((ApplicationControllerAccess) model).addRow(RowType.ACT, RowContent.SW);
+        ((ApplicationControllerAccess) model).addRow(RowType.ACT, RowContent.SZ);
         ((ApplicationControllerAccess) model).addRow(RowType.ACT, RowContent.DE);
  //       ((ApplicationControllerAccess) model).scaleLast();
         ((ApplicationControllerAccess) model).syncRows();
