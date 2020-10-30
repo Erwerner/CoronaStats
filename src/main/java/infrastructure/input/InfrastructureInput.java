@@ -36,11 +36,11 @@ public class InfrastructureInput implements ApplicationInput {
             case SW:
                 country = "Sweden";
                 break;
-            case UK:
-                country = "United Kingdom";
-                break;
             case TK:
                 country = "Turkey";
+                break;
+            case GR:
+                country = "Greece";
                 break;
         }
         if (rowType == ACT)

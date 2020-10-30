@@ -25,15 +25,38 @@ public class ConsoleView extends View {
 
     private void run() {
         update();
+        double szFaktor = 1.0 / 8500000;
+        double deFaktor = 1.0 / 83000000;
         ((ApplicationControllerAccess) model).addRow(RowType.ACT, RowContent.SZ);
         ((ApplicationControllerAccess) model).addRow(RowType.ACT, RowContent.DE);
- //       ((ApplicationControllerAccess) model).scaleLast();
-        ((ApplicationControllerAccess) model).syncRows();
+        ((ApplicationControllerAccess) model).addRow(RowType.DTH, RowContent.SZ);
+        ((ApplicationControllerAccess) model).addRow(RowType.DTH, RowContent.DE);
+        scaleForCountry(szFaktor, 0);
+        scaleForCountry(deFaktor, 1);
+        scaleForCountry(szFaktor, 2);
+        scaleForCountry(deFaktor, 3);
+        ((ApplicationControllerAccess) model).addRow(RowType.ACT, RowContent.SZ);
+        ((ApplicationControllerAccess) model).addRow(RowType.CFM, RowContent.SZ);
+        ((ApplicationControllerAccess) model).addRow(RowType.RCV, RowContent.SZ);
+        ((ApplicationControllerAccess) model).addRow(RowType.ACT, RowContent.DE);
+        ((ApplicationControllerAccess) model).addRow(RowType.CFM, RowContent.DE);
+        ((ApplicationControllerAccess) model).addRow(RowType.RCV, RowContent.DE);
+        scaleForCountry(szFaktor, 4);
+        scaleForCountry(szFaktor, 5);
+        scaleForCountry(szFaktor, 6);
+        scaleForCountry(deFaktor, 7);
+        scaleForCountry(deFaktor, 8);
+        scaleForCountry(deFaktor, 9);
         ((ApplicationControllerAccess) model).export();
         while (active) {
             ConsoleControllerType selection = (ConsoleControllerType) IO.getEnumByInput("Choose Controller", values());
             controllers.get(selection).execute();
         }
+    }
+
+    private void scaleForCountry(double faktor, int i) {
+        ((ApplicationControllerAccess) model).setCursor(i);
+        ((ApplicationControllerAccess) model).scaleCursor(faktor);
     }
 
     @Override
@@ -50,6 +73,7 @@ public class ConsoleView extends View {
         controllers.put(REMV, controllerFactory.initRemoveController(model));
         controllers.put(RSET, controllerFactory.initResetController(model));
         controllers.put(SCAL, controllerFactory.initScaleController(model));
+        controllers.put(SCLA, controllerFactory.initScaleLastController(model));
         controllers.put(EXP, controllerFactory.initExportController(model));
     }
 

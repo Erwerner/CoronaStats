@@ -103,4 +103,13 @@ public class ConsoleControllerFactory {
             }
         };
     }
+
+    public ConsoleController initScaleLastController(Model model) {
+        return new ConsoleController(model) {
+            @Override
+            public void execute() {
+                getModel().scaleLast();
+            }
+        };
+    }
 }
