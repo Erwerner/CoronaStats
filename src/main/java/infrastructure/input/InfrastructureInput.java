@@ -3,93 +3,71 @@ package infrastructure.input;
 import application.core.RowContent;
 import application.core.RowType;
 import application.service.ApplicationInput;
-import helper.IO;
-import org.apache.http.HttpHeaders;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.client.methods.RequestBuilder;
-import org.apache.http.impl.client.HttpClients;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import static application.core.RowType.*;
 
 public class InfrastructureInput implements ApplicationInput {
 
-    private final InputMapper mapper = new InputMapper();
+    private final API API;
+
+    public InfrastructureInput(API api) {
+        API = api;
+    }
 
     @Override
     public Double[] readPoints(RowType rowType, RowContent rowContent) {
-        String country = "";
-        switch (rowContent) {
-            case DE:
-                country = "Germany";
-                break;
-            case SZ:
-                country = "Switzerland";
-                break;
-            case SP:
-                country = "Spain";
-                break;
-            case SW:
-                country = "Sweden";
-                break;
-            case TK:
-                country = "Turkey";
-                break;
-            case GR:
-                country = "Greece";
-                break;
+        switch (rowType) {
+            case ACT:
+                return getActiveFromAPI(rowContent);
+            case DTH_OF_CFM:
+                return getDeathFromConfirmedFromAPI(rowContent);
+            case DTH_TO_RCV:
+                return getDeathToRecoveredFromAPI(rowContent);
+            case DTH_OF_POP:
+                return getDeathOfPopulationFromAPI(rowContent);
+            default:
+                return API.getPointsFromApi(rowContent, rowType);
         }
-        if (rowType == ACT)
-            return getActiveFromAPI(country);
-        else
-            return getPointsFromApi(country, rowType);
     }
 
-    private Double[] getActiveFromAPI(String country) {
-        Double[] confirmed = getPointsFromApi(country, CFM);
-        Double[] deaths = getPointsFromApi(country, DTH);
-        Double[] recovered = getPointsFromApi(country, RCV);
+    private Double[] getDeathOfPopulationFromAPI(RowContent rowContent) {
+        ArrayList<Double> points = new ArrayList<>();
+        Double[] deaths = API.getPointsFromApi(rowContent, DTH);
+        for (int i = 0; i <= deaths.length - 1; i++) {
+            points.add(deaths[i] / rowContent.getPopulation());
+        }
+        return points.toArray(new Double[0]);
+    }
+
+    private Double[] getDeathFromConfirmedFromAPI(RowContent country) {
+        Double[] confirmed = API.getPointsFromApi(country, CFM);
+        Double[] deaths = API.getPointsFromApi(country, DTH);
+        ArrayList<Double> points = new ArrayList<>();
+        for (int i = 0; i <= confirmed.length - 1; i++) {
+            points.add(deaths[i] / confirmed[i]);
+        }
+        return points.toArray(new Double[0]);
+    }
+
+    private Double[] getDeathToRecoveredFromAPI(RowContent country) {
+        Double[] recovered = API.getPointsFromApi(country, RCV);
+        Double[] deaths = API.getPointsFromApi(country, DTH);
+        ArrayList<Double> points = new ArrayList<>();
+        for (int i = 0; i <= recovered.length - 1; i++) {
+            points.add(deaths[i] / (deaths[i] + recovered[i]));
+        }
+        return points.toArray(new Double[0]);
+    }
+
+    private Double[] getActiveFromAPI(RowContent country) {
+        Double[] confirmed = API.getPointsFromApi(country, CFM);
+        Double[] deaths = API.getPointsFromApi(country, DTH);
+        Double[] recovered = API.getPointsFromApi(country, RCV);
         ArrayList<Double> points = new ArrayList<>();
         for (int i = 0; i <= confirmed.length - 1; i++)
             points.add(confirmed[i] - recovered[i] - deaths[i]);
         return points.toArray(new Double[0]);
     }
-
-    private Double[] getPointsFromApi(String country, RowType rowType) {
-        String status = "";
-        switch (rowType) {
-            case RCV:
-                status = "Recovered";
-                break;
-            case DTH:
-                status = "Deaths";
-                break;
-            case CFM:
-                status = "Confirmed";
-                break;
-            case ACT:
-                throw new RuntimeException();
-        }
-        HttpClient client = HttpClients.custom().build();
-        HttpUriRequest request = RequestBuilder.get()
-                .setUri("https://covid-api.mmediagroup.fr/v1/history?country=" + country + "&status=" + status)
-                .setHeader(HttpHeaders.ACCEPT, "*/*")
-                .setHeader(HttpHeaders.USER_AGENT, "PostmanRuntime/7.24.0")
-                .build();
-
-        try {
-            HttpResponse response = client.execute(request);
-            String json = IO.readFromInputStream(response.getEntity().getContent());
-            return mapper.mapJsonToDomainObject(json);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-
 }

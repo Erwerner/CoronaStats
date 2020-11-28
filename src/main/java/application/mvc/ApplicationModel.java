@@ -13,7 +13,7 @@ import java.util.List;
 
 public class ApplicationModel extends Model implements ApplicationControllerAccess, ApplicationViewAccess {
     private final ApplicationData data;
-    private Integer cursor = null;
+    private Integer cursor = 0;
     private final ApplicationService service;
 
     public ApplicationModel(ApplicationInput input) {
@@ -29,7 +29,7 @@ public class ApplicationModel extends Model implements ApplicationControllerAcce
 
     @Override
     public Integer getCursor() {
-        return cursor;
+        return cursor == null ? 0 : cursor;
     }
 
     //Controller

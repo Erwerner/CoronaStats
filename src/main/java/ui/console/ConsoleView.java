@@ -12,6 +12,8 @@ import ui.template.View;
 import java.util.HashMap;
 import java.util.List;
 
+import static application.core.RowContent.*;
+import static application.core.RowType.*;
 import static ui.console.ConsoleControllerType.*;
 
 public class ConsoleView extends View {
@@ -25,37 +27,90 @@ public class ConsoleView extends View {
 
     private void run() {
         update();
-        double szFaktor = 1.0 / 8500000;
-        double deFaktor = 1.0 / 83000000;
-        ((ApplicationControllerAccess) model).addRow(RowType.ACT, RowContent.SZ);
-        ((ApplicationControllerAccess) model).addRow(RowType.ACT, RowContent.DE);
-        ((ApplicationControllerAccess) model).addRow(RowType.DTH, RowContent.SZ);
-        ((ApplicationControllerAccess) model).addRow(RowType.DTH, RowContent.DE);
-        scaleForCountry(szFaktor, 0);
-        scaleForCountry(deFaktor, 1);
-        scaleForCountry(szFaktor, 2);
-        scaleForCountry(deFaktor, 3);
-        ((ApplicationControllerAccess) model).addRow(RowType.ACT, RowContent.SZ);
-        ((ApplicationControllerAccess) model).addRow(RowType.CFM, RowContent.SZ);
-        ((ApplicationControllerAccess) model).addRow(RowType.RCV, RowContent.SZ);
-        ((ApplicationControllerAccess) model).addRow(RowType.ACT, RowContent.DE);
-        ((ApplicationControllerAccess) model).addRow(RowType.CFM, RowContent.DE);
-        ((ApplicationControllerAccess) model).addRow(RowType.RCV, RowContent.DE);
-        scaleForCountry(szFaktor, 4);
-        scaleForCountry(szFaktor, 5);
-        scaleForCountry(szFaktor, 6);
-        scaleForCountry(deFaktor, 7);
-        scaleForCountry(deFaktor, 8);
-        scaleForCountry(deFaktor, 9);
-        ((ApplicationControllerAccess) model).export();
+        ApplicationControllerAccess applicationControllerAccess = (ApplicationControllerAccess) this.model;
+        applicationControllerAccess.addRow(DTH_OF_CFM, BL);
+        applicationControllerAccess.addRow(DTH_OF_CFM, IT);
+        applicationControllerAccess.addRow(DTH_OF_CFM, US);
+        applicationControllerAccess.addRow(DTH_OF_CFM, TC);
+        applicationControllerAccess.addRow(DTH_OF_CFM, BZ);
+        applicationControllerAccess.addRow(DTH_OF_CFM, FR);
+        applicationControllerAccess.addRow(DTH_OF_CFM, FN);
+        applicationControllerAccess.addRow(DTH_OF_CFM, SP);
+        applicationControllerAccess.addRow(DTH_OF_CFM, UK);
+        applicationControllerAccess.addRow(DTH_OF_CFM, SW);
+        applicationControllerAccess.addRow(DTH_OF_CFM, SZ);
+        applicationControllerAccess.addRow(DTH_OF_CFM, DE);
+        applicationControllerAccess.addRow(DTH_OF_CFM, OE);
+
+        applicationControllerAccess.setCursor(12);
+        addCountryStatsPack(SZ);
+        addCountryStatsPack(DE);
+        addCountryStatsPack(SW);
+        addCountryStatsPack(SP);
+        addCountryStatsPack(TC);
+        addCountryStatsPack(UK);
+        addCountryStatsPack(US);
+        addCountryStatsPack(SK);
+        addCountryStatsPack(BZ);
+        addCountryStatsPack(IT);
+        addCountryStatsPack(NL);
+        addCountryStatsPack(FR);
+        addCountryStatsPack(BL);
+        addCountryStatsPack(OE);
+        addCountryStatsPack(FN);
+
+        applicationControllerAccess.addRow(DTH_OF_POP, SZ);
+        applicationControllerAccess.addRow(DTH_OF_POP, DE);
+        applicationControllerAccess.addRow(DTH_OF_POP, SW);
+        applicationControllerAccess.addRow(DTH_OF_POP, SP);
+        applicationControllerAccess.addRow(DTH_OF_POP, TC);
+        applicationControllerAccess.addRow(DTH_OF_POP, UK);
+        applicationControllerAccess.addRow(DTH_OF_POP, US);
+        applicationControllerAccess.addRow(DTH_OF_POP, SK);
+        applicationControllerAccess.addRow(DTH_OF_POP, BZ);
+        applicationControllerAccess.addRow(DTH_OF_POP, IT);
+        applicationControllerAccess.addRow(DTH_OF_POP, NL);
+        applicationControllerAccess.addRow(DTH_OF_POP, FR);
+        applicationControllerAccess.addRow(DTH_OF_POP, BL);
+        applicationControllerAccess.addRow(DTH_OF_POP, OE);
+        applicationControllerAccess.addRow(DTH_OF_POP, FN);
+
+        applicationControllerAccess.addRow(R, SZ);
+        applicationControllerAccess.addRow(R, DE);
+        applicationControllerAccess.addRow(R, SW);
+        applicationControllerAccess.addRow(R, SP);
+        applicationControllerAccess.addRow(R, TC);
+        applicationControllerAccess.addRow(R, UK);
+        applicationControllerAccess.addRow(R, US);
+        applicationControllerAccess.addRow(R, SK);
+        applicationControllerAccess.addRow(R, BZ);
+        applicationControllerAccess.addRow(R, IT);
+        applicationControllerAccess.addRow(R, NL);
+        applicationControllerAccess.addRow(R, FR);
+        applicationControllerAccess.addRow(R, BL);
+        applicationControllerAccess.addRow(R, OE);
+        applicationControllerAccess.addRow(R, FN);
+        applicationControllerAccess.export();
         while (active) {
-            ConsoleControllerType selection = (ConsoleControllerType) IO.getEnumByInput("Choose Controller", values());
+            ConsoleControllerType selection = (ConsoleControllerType) IO.getEnumByInput("Choose Controller", ConsoleControllerType.values());
             controllers.get(selection).execute();
         }
     }
 
-    private void scaleForCountry(double faktor, int i) {
-        ((ApplicationControllerAccess) model).setCursor(i);
+    private void addCountryStatsPack(RowContent country) {
+        addCountryPercentageRow(ACT, country);
+        addCountryPercentageRow(CFM, country);
+        addCountryPercentageRow(RCV, country);
+    }
+
+    private void addCountryPercentageRow(RowType act, RowContent country) {
+        ((ApplicationControllerAccess) model).addRow(act, country);
+        scaleForCountry(1.0 / country.getPopulation());
+    }
+
+    private void scaleForCountry(double faktor) {
+        Integer nextCursor = ((ApplicationViewAccess) model).getCursor() + 1;
+        ((ApplicationControllerAccess) model).setCursor(nextCursor);
         ((ApplicationControllerAccess) model).scaleCursor(faktor);
     }
 
