@@ -11,9 +11,6 @@ import ui.template.Model;
 
 import java.util.List;
 
-import static application.core.RowContent.*;
-import static application.core.RowType.*;
-
 public class ApplicationModel extends Model implements ApplicationControllerAccess, ApplicationViewAccess {
     private final ApplicationData data;
     private final ApplicationService service;

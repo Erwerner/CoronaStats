@@ -16,7 +16,7 @@ public class API {
     public final InputMapper mapper = new InputMapper();
 
     public Double[] getPointsFromApi(RowContent country, RowType rowType) {
-        String status = "";
+        String status;
         switch (rowType) {
             case RCV:
                 status = "Recovered";

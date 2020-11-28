@@ -13,7 +13,7 @@ import static org.mockito.Mockito.mock;
 
 public class ApplicationServiceTest {
     ApplicationService cut;
-    private ApplicationInput mockInput = mock(ApplicationInput.class);
+    private final ApplicationInput mockInput = mock(ApplicationInput.class);
 
     @Before
     public void setup() {

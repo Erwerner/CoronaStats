@@ -25,8 +25,7 @@ public class InputMapperTest {
         dates = dates.replace("}","\"]}");
         dates = dates.replace(", ","\",\"");
         dates = dates.replaceAll("2020-[0-9]{2}-[0-9]{2}=","");
-        DatesJsonFormat datesJson = new Gson().fromJson(dates, DatesJsonFormat.class);
-        DatesJsonFormat act = datesJson;
+        DatesJsonFormat act = new Gson().fromJson(dates, DatesJsonFormat.class);
         System.out.println(act.getDates().toString());
         System.out.println(act.getDates().length);
         assertNotEquals(0, act.getDates().length);

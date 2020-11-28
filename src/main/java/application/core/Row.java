@@ -14,7 +14,7 @@ public class Row {
     }
 
     public Integer getHighPointIdx() {
-        Integer index = 0;
+        int index = 0;
         for (int i = 0; i <= points.size() - 1; i++) {
             if (points.get(i) > points.get(index))
                 index = i;

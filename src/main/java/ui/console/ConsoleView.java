@@ -1,8 +1,6 @@
 package ui.console;
 
 import application.core.Row;
-import application.core.RowContent;
-import application.core.RowType;
 import application.mvc.ApplicationControllerAccess;
 import application.mvc.ApplicationViewAccess;
 import helper.IO;
@@ -12,8 +10,6 @@ import ui.template.View;
 import java.util.HashMap;
 import java.util.List;
 
-import static application.core.RowContent.*;
-import static application.core.RowType.*;
 import static ui.console.ConsoleControllerType.*;
 
 public class ConsoleView extends View {
@@ -35,7 +31,7 @@ public class ConsoleView extends View {
             controllers.get(selection).execute();
         }
     }
-    
+
     @Override
     protected void initController() {
         ConsoleControllerFactory controllerFactory = new ConsoleControllerFactory();

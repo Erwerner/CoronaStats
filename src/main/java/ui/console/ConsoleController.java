@@ -1,7 +1,5 @@
 package ui.console;
 
-import application.core.RowContent;
-import application.core.RowType;
 import application.mvc.ApplicationControllerAccess;
 import ui.template.Controller;
 import ui.template.Model;
