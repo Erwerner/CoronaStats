@@ -39,10 +39,10 @@ public class InfrastructureInput implements ApplicationInput {
     private Double[] getRFromAPI(RowContent rowContent) {
         ArrayList<Double> points = new ArrayList<>();
         Double[] news = getNewFromAPI(rowContent);
-        for (int i = 0; i <= news.length - 16; i++) {
+        for (int i = 0; i <= news.length - 14; i++) {
             double r =
-                    (news[i] + news[i + 1] + news[i + 2] + news[i + 3] + news[i + 4] + news[i + 5] + news[i + 6] + news[i + 7]) /
-                            (news[i + 8] + news[i + +9] + news[i + 10] + news[i + 11] + news[i + 12] + news[i + 13] + news[i + 14] + news[i + 15]);
+                    (news[i] + news[i + 1] + news[i + 2] + news[i + 3] + news[i + 4] + news[i + 5] + news[i + 6] ) /
+                            (news[i + 7] + news[i + 8] + news[i + 9] + news[i + 10] + news[i + 11] + news[i + 12] + news[i + 13] );
             points.add(r);
         }
         return points.toArray(new Double[0]);
