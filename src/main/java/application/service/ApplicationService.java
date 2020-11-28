@@ -67,4 +67,10 @@ public class ApplicationService {
         for (int rowIndex = 1; rowIndex <= data.getRowCount() - 1; rowIndex++)
             data.setScale(rowIndex, syncRow.getPoints().get(0) / data.getRow(rowIndex).getPoints().get(0));
     }
+
+    public void addCountryPercentageRow(ApplicationData data, RowType rowType, RowContent country) {
+        addRow(data, rowType, country);
+        data.setCursor(data.getCursor() + 1);
+        data.setScale(data.getCursor(), 1.0 / country.getPopulation());
+    }
 }

@@ -27,6 +27,16 @@ public class ConsoleView extends View {
 
     private void run() {
         update();
+        ApplicationControllerAccess applicationControllerAccess = initializeModel();
+
+        applicationControllerAccess.export();
+        while (active) {
+            ConsoleControllerType selection = (ConsoleControllerType) IO.getEnumByInput("Choose Controller", ConsoleControllerType.values());
+            controllers.get(selection).execute();
+        }
+    }
+
+    private ApplicationControllerAccess initializeModel() {
         ApplicationControllerAccess applicationControllerAccess = (ApplicationControllerAccess) this.model;
         applicationControllerAccess.addRow(DTH_OF_CFM, BL);
         applicationControllerAccess.addRow(DTH_OF_CFM, IT);
@@ -74,45 +84,15 @@ public class ConsoleView extends View {
         applicationControllerAccess.addRow(DTH_OF_POP, BL);
         applicationControllerAccess.addRow(DTH_OF_POP, OE);
         applicationControllerAccess.addRow(DTH_OF_POP, FN);
-
-        applicationControllerAccess.addRow(R, SZ);
-        applicationControllerAccess.addRow(R, DE);
-        applicationControllerAccess.addRow(R, SW);
-        applicationControllerAccess.addRow(R, SP);
-        applicationControllerAccess.addRow(R, TC);
-        applicationControllerAccess.addRow(R, UK);
-        applicationControllerAccess.addRow(R, US);
-        applicationControllerAccess.addRow(R, SK);
-        applicationControllerAccess.addRow(R, BZ);
-        applicationControllerAccess.addRow(R, IT);
-        applicationControllerAccess.addRow(R, NL);
-        applicationControllerAccess.addRow(R, FR);
-        applicationControllerAccess.addRow(R, BL);
-        applicationControllerAccess.addRow(R, OE);
-        applicationControllerAccess.addRow(R, FN);
-        applicationControllerAccess.export();
-        while (active) {
-            ConsoleControllerType selection = (ConsoleControllerType) IO.getEnumByInput("Choose Controller", ConsoleControllerType.values());
-            controllers.get(selection).execute();
-        }
+        return applicationControllerAccess;
     }
 
     private void addCountryStatsPack(RowContent country) {
-        addCountryPercentageRow(ACT, country);
-        addCountryPercentageRow(CFM, country);
-        addCountryPercentageRow(RCV, country);
+        ((ApplicationControllerAccess) this.model).addCountryPercentageRow(ACT, country);
+        ((ApplicationControllerAccess) this.model).addCountryPercentageRow(CFM, country);
+        ((ApplicationControllerAccess) this.model).addCountryPercentageRow(RCV, country);
     }
 
-    private void addCountryPercentageRow(RowType act, RowContent country) {
-        ((ApplicationControllerAccess) model).addRow(act, country);
-        scaleForCountry(1.0 / country.getPopulation());
-    }
-
-    private void scaleForCountry(double faktor) {
-        Integer nextCursor = ((ApplicationViewAccess) model).getCursor() + 1;
-        ((ApplicationControllerAccess) model).setCursor(nextCursor);
-        ((ApplicationControllerAccess) model).scaleCursor(faktor);
-    }
 
     @Override
     protected void initController() {

@@ -13,7 +13,6 @@ import java.util.List;
 
 public class ApplicationModel extends Model implements ApplicationControllerAccess, ApplicationViewAccess {
     private final ApplicationData data;
-    private Integer cursor = 0;
     private final ApplicationService service;
 
     public ApplicationModel(ApplicationInput input) {
@@ -29,13 +28,13 @@ public class ApplicationModel extends Model implements ApplicationControllerAcce
 
     @Override
     public Integer getCursor() {
-        return cursor == null ? 0 : cursor;
+        return data.getCursor();
     }
 
     //Controller
     @Override
     public void shiftCursor(int shift) {
-        data.setShift(cursor, shift);
+        data.setShift(data.getCursor(), shift);
         notifyViews();
     }
 
@@ -53,8 +52,7 @@ public class ApplicationModel extends Model implements ApplicationControllerAcce
 
     @Override
     public void removeCursor() {
-        data.removeIndex(cursor);
-        cursor = null;
+        data.removeCursor();
         notifyViews();
     }
 
@@ -72,7 +70,7 @@ public class ApplicationModel extends Model implements ApplicationControllerAcce
 
     @Override
     public void scaleCursor(Double faktor) {
-        data.setScale(cursor, faktor);
+        data.setScale(data.getCursor(), faktor);
         notifyViews();
     }
 
@@ -91,12 +89,18 @@ public class ApplicationModel extends Model implements ApplicationControllerAcce
 
     @Override
     public void setCursor(int index) {
-        cursor = index;
+        data.setCursor(index);
         notifyViews();
     }
 
     @Override
     public void scaleLast() {
         service.sycaleLast(data);
+    }
+
+    @Override
+    public void addCountryPercentageRow(RowType rowType, RowContent country) {
+        service.addCountryPercentageRow(data, rowType, country);
+        notifyViews();
     }
 }

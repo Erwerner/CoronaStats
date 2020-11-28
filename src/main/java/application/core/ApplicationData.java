@@ -7,6 +7,7 @@ public class ApplicationData {
     private final List<Row> rows = new ArrayList<>();
     private final List<Double> scales = new ArrayList<>();
     private final List<Integer> shifts = new ArrayList<>();
+    private Integer cursor = 0;
     int cutStart;
     int cutEnd;
 
@@ -38,18 +39,19 @@ public class ApplicationData {
         this.cutEnd = cutEnd;
     }
 
-    public void setShift(Integer index, int shift) {
+    public void setShift(int index, int shift) {
         shifts.set(index, shift);
     }
 
-    public void setScale(Integer index, Double faktor) {
+    public void setScale(int index, Double faktor) {
         scales.set(index, faktor);
     }
 
-    public void removeIndex(Integer index) {
-        rows.remove((int) index);
-        scales.remove((int) index);
-        shifts.remove((int) index);
+    public void removeCursor() {
+        rows.remove((int) cursor);
+        scales.remove((int) cursor);
+        shifts.remove((int) cursor);
+        cursor = null;
     }
 
     public void reset() {
@@ -71,5 +73,13 @@ public class ApplicationData {
 
     public Row getRow(int index) {
         return rows.get(index);
+    }
+
+    public Integer getCursor() {
+        return cursor == null ? 0 : cursor;
+    }
+
+    public void setCursor(int index) {
+        cursor = index;
     }
 }
