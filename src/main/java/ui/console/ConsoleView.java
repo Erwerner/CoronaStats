@@ -10,11 +10,13 @@ import ui.template.View;
 import java.util.HashMap;
 import java.util.List;
 
+import static application.core.RowContent.DE;
+import static application.core.RowType.R;
 import static ui.console.ConsoleControllerType.*;
 
 public class ConsoleView extends View {
     private HashMap<ConsoleControllerType, ConsoleController> controllers;
-    private boolean active = true;
+    private boolean active = false;
 
     public ConsoleView(Model model) {
         super(model);

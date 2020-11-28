@@ -131,5 +131,21 @@ public class ApplicationService {
         addRow(data,DTH_OF_POP, BL);
         addRow(data,DTH_OF_POP, OE);
         addRow(data,DTH_OF_POP, FN);
+
+        addRow(data,R, SZ);
+        addRow(data,R, DE);
+        addRow(data,R, SW);
+        addRow(data,R, SP);
+        addRow(data,R, TC);
+        addRow(data,R, UK);
+        addRow(data,R, US);
+        addRow(data,R, SK);
+        addRow(data,R, BZ);
+        addRow(data,R, IT);
+        addRow(data,R, NL);
+        addRow(data,R, FR);
+        addRow(data,R, BL);
+        addRow(data,R, OE);
+        addRow(data,R, FN);
     }
 }
