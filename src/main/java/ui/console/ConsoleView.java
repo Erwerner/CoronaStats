@@ -27,73 +27,15 @@ public class ConsoleView extends View {
 
     private void run() {
         update();
-        ApplicationControllerAccess applicationControllerAccess = initializeModel();
-
+        ApplicationControllerAccess applicationControllerAccess = (ApplicationControllerAccess) model;
+        applicationControllerAccess.initializeModel();
         applicationControllerAccess.export();
         while (active) {
             ConsoleControllerType selection = (ConsoleControllerType) IO.getEnumByInput("Choose Controller", ConsoleControllerType.values());
             controllers.get(selection).execute();
         }
     }
-
-    private ApplicationControllerAccess initializeModel() {
-        ApplicationControllerAccess applicationControllerAccess = (ApplicationControllerAccess) this.model;
-        applicationControllerAccess.addRow(DTH_OF_CFM, BL);
-        applicationControllerAccess.addRow(DTH_OF_CFM, IT);
-        applicationControllerAccess.addRow(DTH_OF_CFM, US);
-        applicationControllerAccess.addRow(DTH_OF_CFM, TC);
-        applicationControllerAccess.addRow(DTH_OF_CFM, BZ);
-        applicationControllerAccess.addRow(DTH_OF_CFM, FR);
-        applicationControllerAccess.addRow(DTH_OF_CFM, FN);
-        applicationControllerAccess.addRow(DTH_OF_CFM, SP);
-        applicationControllerAccess.addRow(DTH_OF_CFM, UK);
-        applicationControllerAccess.addRow(DTH_OF_CFM, SW);
-        applicationControllerAccess.addRow(DTH_OF_CFM, SZ);
-        applicationControllerAccess.addRow(DTH_OF_CFM, DE);
-        applicationControllerAccess.addRow(DTH_OF_CFM, OE);
-
-        applicationControllerAccess.setCursor(12);
-        addCountryStatsPack(SZ);
-        addCountryStatsPack(DE);
-        addCountryStatsPack(SW);
-        addCountryStatsPack(SP);
-        addCountryStatsPack(TC);
-        addCountryStatsPack(UK);
-        addCountryStatsPack(US);
-        addCountryStatsPack(SK);
-        addCountryStatsPack(BZ);
-        addCountryStatsPack(IT);
-        addCountryStatsPack(NL);
-        addCountryStatsPack(FR);
-        addCountryStatsPack(BL);
-        addCountryStatsPack(OE);
-        addCountryStatsPack(FN);
-
-        applicationControllerAccess.addRow(DTH_OF_POP, SZ);
-        applicationControllerAccess.addRow(DTH_OF_POP, DE);
-        applicationControllerAccess.addRow(DTH_OF_POP, SW);
-        applicationControllerAccess.addRow(DTH_OF_POP, SP);
-        applicationControllerAccess.addRow(DTH_OF_POP, TC);
-        applicationControllerAccess.addRow(DTH_OF_POP, UK);
-        applicationControllerAccess.addRow(DTH_OF_POP, US);
-        applicationControllerAccess.addRow(DTH_OF_POP, SK);
-        applicationControllerAccess.addRow(DTH_OF_POP, BZ);
-        applicationControllerAccess.addRow(DTH_OF_POP, IT);
-        applicationControllerAccess.addRow(DTH_OF_POP, NL);
-        applicationControllerAccess.addRow(DTH_OF_POP, FR);
-        applicationControllerAccess.addRow(DTH_OF_POP, BL);
-        applicationControllerAccess.addRow(DTH_OF_POP, OE);
-        applicationControllerAccess.addRow(DTH_OF_POP, FN);
-        return applicationControllerAccess;
-    }
-
-    private void addCountryStatsPack(RowContent country) {
-        ((ApplicationControllerAccess) this.model).addCountryPercentageRow(ACT, country);
-        ((ApplicationControllerAccess) this.model).addCountryPercentageRow(CFM, country);
-        ((ApplicationControllerAccess) this.model).addCountryPercentageRow(RCV, country);
-    }
-
-
+    
     @Override
     protected void initController() {
         ConsoleControllerFactory controllerFactory = new ConsoleControllerFactory();

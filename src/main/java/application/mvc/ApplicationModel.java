@@ -11,6 +11,9 @@ import ui.template.Model;
 
 import java.util.List;
 
+import static application.core.RowContent.*;
+import static application.core.RowType.*;
+
 public class ApplicationModel extends Model implements ApplicationControllerAccess, ApplicationViewAccess {
     private final ApplicationData data;
     private final ApplicationService service;
@@ -96,11 +99,12 @@ public class ApplicationModel extends Model implements ApplicationControllerAcce
     @Override
     public void scaleLast() {
         service.sycaleLast(data);
+        notifyViews();
     }
 
     @Override
-    public void addCountryPercentageRow(RowType rowType, RowContent country) {
-        service.addCountryPercentageRow(data, rowType, country);
+    public void initializeModel() {
+        service.initializeModel(data);
         notifyViews();
     }
 }

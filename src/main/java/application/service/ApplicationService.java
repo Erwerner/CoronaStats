@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static application.core.RowContent.*;
+import static application.core.RowType.*;
+
 public class ApplicationService {
     private final ApplicationInput input;
 
@@ -68,9 +71,65 @@ public class ApplicationService {
             data.setScale(rowIndex, syncRow.getPoints().get(0) / data.getRow(rowIndex).getPoints().get(0));
     }
 
-    public void addCountryPercentageRow(ApplicationData data, RowType rowType, RowContent country) {
+    private void addCountryStatsPack(ApplicationData data, RowContent country) {
+        addCountryPercentageRow(data, ACT, country);
+        addCountryPercentageRow(data, CFM, country);
+        addCountryPercentageRow(data, RCV, country);
+    }
+
+    private void addCountryPercentageRow(ApplicationData data, RowType rowType, RowContent country) {
         addRow(data, rowType, country);
         data.setCursor(data.getCursor() + 1);
         data.setScale(data.getCursor(), 1.0 / country.getPopulation());
+    }
+
+    public void initializeModel(ApplicationData data) {
+        addRow(data, DTH_OF_CFM, BL);
+        addRow(data, DTH_OF_CFM, IT);
+        addRow(data, DTH_OF_CFM, US);
+        addRow(data, DTH_OF_CFM, TC);
+        addRow(data, DTH_OF_CFM, BZ);
+        addRow(data, DTH_OF_CFM, FR);
+        addRow(data, DTH_OF_CFM, FN);
+        addRow(data, DTH_OF_CFM, SP);
+        addRow(data, DTH_OF_CFM, UK);
+        addRow(data, DTH_OF_CFM, SW);
+        addRow(data, DTH_OF_CFM, SZ);
+        addRow(data, DTH_OF_CFM, DE);
+        addRow(data, DTH_OF_CFM, OE);
+
+        data.setCursor(12);
+
+        addCountryStatsPack(data,SZ);
+        addCountryStatsPack(data,DE);
+        addCountryStatsPack(data,SW);
+        addCountryStatsPack(data,SP);
+        addCountryStatsPack(data,TC);
+        addCountryStatsPack(data,UK);
+        addCountryStatsPack(data,US);
+        addCountryStatsPack(data,SK);
+        addCountryStatsPack(data,BZ);
+        addCountryStatsPack(data,IT);
+        addCountryStatsPack(data,NL);
+        addCountryStatsPack(data,FR);
+        addCountryStatsPack(data,BL);
+        addCountryStatsPack(data,OE);
+        addCountryStatsPack(data,FN);
+
+        addRow(data,DTH_OF_POP, SZ);
+        addRow(data,DTH_OF_POP, DE);
+        addRow(data,DTH_OF_POP, SW);
+        addRow(data,DTH_OF_POP, SP);
+        addRow(data,DTH_OF_POP, TC);
+        addRow(data,DTH_OF_POP, UK);
+        addRow(data,DTH_OF_POP, US);
+        addRow(data,DTH_OF_POP, SK);
+        addRow(data,DTH_OF_POP, BZ);
+        addRow(data,DTH_OF_POP, IT);
+        addRow(data,DTH_OF_POP, NL);
+        addRow(data,DTH_OF_POP, FR);
+        addRow(data,DTH_OF_POP, BL);
+        addRow(data,DTH_OF_POP, OE);
+        addRow(data,DTH_OF_POP, FN);
     }
 }

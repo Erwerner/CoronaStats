@@ -4,8 +4,6 @@ import application.core.RowContent;
 import application.core.RowType;
 
 public interface ApplicationControllerAccess {
-    void addCountryPercentageRow(RowType act, RowContent country);
-
     void shiftCursor(int shift);
 
     void cutRowsStart(int cut);
@@ -27,4 +25,6 @@ public interface ApplicationControllerAccess {
     void setCursor(int index);
 
     void scaleLast();
+
+    void initializeModel();
 }
