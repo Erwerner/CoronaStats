@@ -5,6 +5,7 @@ import application.core.RowType;
 import application.service.ApplicationInput;
 
 import java.util.ArrayList;
+import java.util.function.Function;
 
 import static application.core.RowType.*;
 
@@ -29,20 +30,36 @@ public class InfrastructureInput implements ApplicationInput {
                 return getDeathOfPopulationFromAPI(rowContent);
             case NEW:
                 return getNewFromAPI(rowContent);
-            case R:
-                return getRFromAPI(rowContent);
+            case R_NEW:
+                return getRFromAPI(rowContent, this::getNewFromAPI);
+            case INC_NEW:
+                return getIncidFromApi(rowContent, this::getNewFromAPI);
+            case R_DTH:
+                return getRFromAPI(rowContent, this::getDeathNewFromAPI);
+            case INC_DTH:
+                return getIncidFromApi(rowContent, this::getDeathNewFromAPI);
             default:
                 return api.getPointsFromApi(rowContent, rowType);
         }
     }
 
-    private Double[] getRFromAPI(RowContent rowContent) {
+    private Double[] getIncidFromApi(RowContent rowContent, Function<RowContent, Double[]> valueFunction) {
         ArrayList<Double> points = new ArrayList<>();
-        Double[] news = getNewFromAPI(rowContent);
+        Double[] news = valueFunction.apply(rowContent);
+        for (int i = 0; i <= news.length - 14; i++) {
+            double incid7 = 100000 * (news[i] + news[i + 1] + news[i + 2] + news[i + 3] + news[i + 4] + news[i + 5] + news[i + 6]) / rowContent.getPopulation();
+            points.add(incid7);
+        }
+        return points.toArray(new Double[0]);
+    }
+
+    private Double[] getRFromAPI(RowContent rowContent, Function<RowContent, Double[]> valueFunnction) {
+        ArrayList<Double> points = new ArrayList<>();
+        Double[] news = valueFunnction.apply(rowContent);
         for (int i = 0; i <= news.length - 14; i++) {
             double r =
-                    (news[i] + news[i + 1] + news[i + 2] + news[i + 3] + news[i + 4] + news[i + 5] + news[i + 6] ) /
-                            (news[i + 7] + news[i + 8] + news[i + 9] + news[i + 10] + news[i + 11] + news[i + 12] + news[i + 13] );
+                    (news[i] + news[i + 1] + news[i + 2] + news[i + 3] + news[i + 4] + news[i + 5] + news[i + 6]) /
+                            (news[i + 7] + news[i + 8] + news[i + 9] + news[i + 10] + news[i + 11] + news[i + 12] + news[i + 13]);
             points.add(r);
         }
         return points.toArray(new Double[0]);
@@ -53,6 +70,16 @@ public class InfrastructureInput implements ApplicationInput {
         Double[] confirmed = api.getPointsFromApi(rowContent, CFM);
         for (int i = 0; i <= confirmed.length - 2; i++) {
             points.add(confirmed[i] - confirmed[i + 1]);
+        }
+        return points.toArray(new Double[0]);
+    }
+
+
+    private Double[] getDeathNewFromAPI(RowContent rowContent) {
+        ArrayList<Double> points = new ArrayList<>();
+        Double[] deaths = api.getPointsFromApi(rowContent, DTH);
+        for (int i = 0; i <= deaths.length - 2; i++) {
+            points.add(deaths[i] - deaths[i + 1]);
         }
         return points.toArray(new Double[0]);
     }

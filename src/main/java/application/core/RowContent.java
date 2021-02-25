@@ -1,7 +1,11 @@
 package application.core;
 
 public enum RowContent {
-    DE, SZ, SW, TK, GR, TC, UK, US, SK, BZ, IT, NL, FR, BL, OE, FN, SP;
+    DE, SZ, NL, OE,
+    IT, FR, BL, TC, SP,
+    BZ, UK, US, IR, PL, PT, SW,
+    DN, UI,
+    FN, NW, SK;
 
     public int getPopulation() {
         switch (this) {
@@ -10,7 +14,7 @@ public enum RowContent {
             case SZ:
                 return 8500000;
             case SW:
-                return 10000000;
+                return 10300000;
             case SP:
                 return 47000000;
             case TC:
@@ -35,6 +39,18 @@ public enum RowContent {
                 return 8900000;
             case FN:
                 return 5500000;
+            case DN:
+                return 5900000;
+            case IR:
+                return 4800000;
+            case UI:
+                return 41800000;
+            case PL:
+                return 38300000;
+            case PT:
+                return 10300000;
+            case NW:
+                return 5400000;
             default:
                 throw new RuntimeException("No population for " + this);
         }

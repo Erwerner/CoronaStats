@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static application.core.RowContent.*;
 import static application.core.RowType.*;
 
 public class ApplicationService {
@@ -72,6 +71,7 @@ public class ApplicationService {
     }
 
     private void addCountryStatsPack(ApplicationData data, RowContent country) {
+
         addCountryPercentageRow(data, ACT, country);
         addCountryPercentageRow(data, CFM, country);
         addCountryPercentageRow(data, RCV, country);
@@ -79,73 +79,17 @@ public class ApplicationService {
 
     private void addCountryPercentageRow(ApplicationData data, RowType rowType, RowContent country) {
         addRow(data, rowType, country);
-        data.setCursor(data.getCursor() + 1);
         data.setScale(data.getCursor(), 1.0 / country.getPopulation());
+        data.setCursor(data.getCursor() + 1);
     }
 
     public void initializeModel(ApplicationData data) {
-        addRow(data, DTH_OF_CFM, BL);
-        addRow(data, DTH_OF_CFM, IT);
-        addRow(data, DTH_OF_CFM, US);
-        addRow(data, DTH_OF_CFM, TC);
-        addRow(data, DTH_OF_CFM, BZ);
-        addRow(data, DTH_OF_CFM, FR);
-        addRow(data, DTH_OF_CFM, FN);
-        addRow(data, DTH_OF_CFM, SP);
-        addRow(data, DTH_OF_CFM, UK);
-        addRow(data, DTH_OF_CFM, SW);
-        addRow(data, DTH_OF_CFM, SZ);
-        addRow(data, DTH_OF_CFM, DE);
-        addRow(data, DTH_OF_CFM, OE);
-
-        data.setCursor(12);
-
-        addCountryStatsPack(data,SZ);
-        addCountryStatsPack(data,DE);
-        addCountryStatsPack(data,SW);
-        addCountryStatsPack(data,SP);
-        addCountryStatsPack(data,TC);
-        addCountryStatsPack(data,UK);
-        addCountryStatsPack(data,US);
-        addCountryStatsPack(data,SK);
-        addCountryStatsPack(data,BZ);
-        addCountryStatsPack(data,IT);
-        addCountryStatsPack(data,NL);
-        addCountryStatsPack(data,FR);
-        addCountryStatsPack(data,BL);
-        addCountryStatsPack(data,OE);
-        addCountryStatsPack(data,FN);
-
-        addRow(data,DTH_OF_POP, SZ);
-        addRow(data,DTH_OF_POP, DE);
-        addRow(data,DTH_OF_POP, SW);
-        addRow(data,DTH_OF_POP, SP);
-        addRow(data,DTH_OF_POP, TC);
-        addRow(data,DTH_OF_POP, UK);
-        addRow(data,DTH_OF_POP, US);
-        addRow(data,DTH_OF_POP, SK);
-        addRow(data,DTH_OF_POP, BZ);
-        addRow(data,DTH_OF_POP, IT);
-        addRow(data,DTH_OF_POP, NL);
-        addRow(data,DTH_OF_POP, FR);
-        addRow(data,DTH_OF_POP, BL);
-        addRow(data,DTH_OF_POP, OE);
-        addRow(data,DTH_OF_POP, FN);
-
-        addRow(data,R, SZ);
-        addRow(data,R, DE);
-        addRow(data,R, SW);
-        addRow(data,R, SP);
-        addRow(data,R, TC);
-        addRow(data,R, UK);
-        addRow(data,R, US);
-        addRow(data,R, SK);
-        addRow(data,R, BZ);
-        addRow(data,R, IT);
-        addRow(data,R, NL);
-        addRow(data,R, FR);
-        addRow(data,R, BL);
-        addRow(data,R, OE);
-        addRow(data,R, FN);
+        Arrays.stream(RowContent.values()).forEach(rowContent -> addCountryStatsPack(data, rowContent));
+        Arrays.stream(RowContent.values()).forEach(rowContent -> addRow(data, DTH_OF_POP, rowContent));
+        Arrays.stream(RowContent.values()).forEach(rowContent -> addRow(data, R_NEW, rowContent));
+        Arrays.stream(RowContent.values()).forEach(rowContent -> addRow(data, DTH_OF_CFM, rowContent));
+        Arrays.stream(RowContent.values()).forEach(rowContent -> addRow(data, INC_NEW, rowContent));
+        Arrays.stream(RowContent.values()).forEach(rowContent -> addRow(data, R_DTH, rowContent));
+        Arrays.stream(RowContent.values()).forEach(rowContent -> addRow(data, INC_DTH, rowContent));
     }
 }

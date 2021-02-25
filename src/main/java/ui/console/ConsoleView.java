@@ -10,8 +10,6 @@ import ui.template.View;
 import java.util.HashMap;
 import java.util.List;
 
-import static application.core.RowContent.DE;
-import static application.core.RowType.R;
 import static ui.console.ConsoleControllerType.*;
 
 public class ConsoleView extends View {

@@ -10,8 +10,6 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.impl.client.HttpClients;
 
-import java.io.IOException;
-
 public class API {
     public final InputMapper mapper = new InputMapper();
 
@@ -42,67 +40,80 @@ public class API {
             HttpResponse response = client.execute(request);
             String json = IO.readFromInputStream(response.getEntity().getContent());
             return mapper.mapJsonToDomainObject(json);
-        } catch (IOException e) {
+        } catch (Exception e) {
+            System.out.println(uri);
             e.printStackTrace();
             return null;
         }
     }
 
     private String getName(RowContent country) {
-        String country1 = "";
+        String name = "";
         switch (country) {
             case DE:
-                country1 = "Germany";
+                name = "Germany";
                 break;
             case SZ:
-                country1 = "Switzerland";
+                name = "Switzerland";
                 break;
             case SP:
-                country1 = "Spain";
+                name = "Spain";
                 break;
             case SW:
-                country1 = "Sweden";
-                break;
-            case TK:
-                country1 = "Turkey";
-                break;
-            case GR:
-                country1 = "Greece";
+                name = "Sweden";
                 break;
             case TC:
-                country1 = "Czechia";
+                name = "Czechia";
                 break;
             case UK:
-                country1 = "United+Kingdom";
+                name = "United+Kingdom";
                 break;
             case US:
-                country1 = "US";
+                name = "US";
                 break;
             case SK:
-                country1 = "Korea,+South";
+                name = "Korea,+South";
                 break;
             case BZ:
-                country1 = "Brazil";
+                name = "Brazil";
                 break;
             case IT:
-                country1 = "Italy";
+                name = "Italy";
                 break;
             case NL:
-                country1 = "Netherlands";
+                name = "Netherlands";
                 break;
             case FR:
-                country1 = "France";
+                name = "France";
                 break;
             case BL:
-                country1 = "Belgium";
+                name = "Belgium";
                 break;
             case OE:
-                country1 = "Austria";
+                name = "Austria";
                 break;
             case FN:
-                country1 = "Finland";
+                name = "Finland";
+                break;
+            case DN:
+                name = "Denmark";
+                break;
+            case IR:
+                name = "Ireland";
+                break;
+            case UI:
+                name = "Ukraine";
+                break;
+            case PL:
+                name = "Poland";
+                break;
+            case PT:
+                name = "Portugal";
+                break;
+            case NW:
+                name = "Norway";
                 break;
         }
-        return country1;
+        return name;
     }
 }
