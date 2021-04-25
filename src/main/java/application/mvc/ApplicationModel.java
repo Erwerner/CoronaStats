@@ -94,12 +94,6 @@ public class ApplicationModel extends Model implements ApplicationControllerAcce
     }
 
     @Override
-    public void scaleLast() {
-        service.sycaleLast(data);
-        notifyViews();
-    }
-
-    @Override
     public void initializeModel() {
         service.initializeModel(data);
         notifyViews();

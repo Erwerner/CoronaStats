@@ -10,24 +10,37 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.impl.client.HttpClients;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class API {
     public final InputMapper mapper = new InputMapper();
+    private final Map<RowContent, Map<RowType, Double[]>> apiPoints = new HashMap<>();
 
     public Double[] getPointsFromApi(RowContent country, RowType rowType) {
         String status;
-        switch (rowType) {
-            case RCV:
-                status = "Recovered";
-                break;
-            case DTH:
-                status = "Deaths";
-                break;
-            case CFM:
-                status = "Confirmed";
-                break;
-            default:
-                throw new RuntimeException("Can't read from API: " + rowType);
+        apiPoints.computeIfAbsent(country, k -> new HashMap<>());
+        Map<RowType, Double[]> countryPoints = apiPoints.get(country);
+        if (countryPoints.get(rowType) == null) {
+            switch (rowType) {
+                case RCV:
+                    status = "Recovered";
+                    break;
+                case DTH:
+                    status = "Deaths";
+                    break;
+                case CFM:
+                    status = "Confirmed";
+                    break;
+                default:
+                    throw new RuntimeException("Can't read from API: " + rowType);
+            }
+            countryPoints.put(rowType, readApi(country, status));
         }
+        return countryPoints.get(rowType);
+    }
+
+    private Double[] readApi(RowContent country, String status) {
         HttpClient client = HttpClients.custom().build();
         String uri = "https://covid-api.mmediagroup.fr/v1/history?country=" + getName(country) + "&status=" + status;
         HttpUriRequest request = RequestBuilder.get()
@@ -98,8 +111,8 @@ public class API {
             case DN:
                 name = "Denmark";
                 break;
-            case IR:
-                name = "Ireland";
+            case IS:
+                name = "Israel";
                 break;
             case UI:
                 name = "Ukraine";

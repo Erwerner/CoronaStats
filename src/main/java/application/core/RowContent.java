@@ -1,11 +1,12 @@
 package application.core;
 
 public enum RowContent {
-    DE, SZ, NL, OE,
-    IT, FR, BL, TC, SP,
-    BZ, UK, US, IR, PL, PT, SW,
-    DN, UI,
-    FN, NW, SK;
+    DE, SZ, OE, NL,
+    BZ, US, PL, SW,
+    IT, FR, SP,
+    BL, TC, PT, UK,
+    IS, UI,
+    DN, FN, NW, SK;
 
     public int getPopulation() {
         switch (this) {
@@ -41,8 +42,8 @@ public enum RowContent {
                 return 5500000;
             case DN:
                 return 5900000;
-            case IR:
-                return 4800000;
+            case IS:
+                return 9100000;
             case UI:
                 return 41800000;
             case PL:

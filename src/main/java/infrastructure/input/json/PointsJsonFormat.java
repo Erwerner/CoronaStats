@@ -1,9 +1,9 @@
 package infrastructure.input.json;
 
-public class DatesJsonFormat {
+public class PointsJsonFormat {
     private final Double[] dates;
 
-    public DatesJsonFormat(Double[] dates) {
+    public PointsJsonFormat(Double[] dates) {
         this.dates = dates;
     }
 

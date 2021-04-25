@@ -24,7 +24,5 @@ public interface ApplicationControllerAccess {
 
     void setCursor(int index);
 
-    void scaleLast();
-
     void initializeModel();
 }

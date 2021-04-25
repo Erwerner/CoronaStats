@@ -63,15 +63,7 @@ public class ApplicationService {
         data.addRow(new Row(rowType, rowContent, Arrays.asList(points)));
     }
 
-    public void sycaleLast(ApplicationData data) {
-        data.reset();
-        Row syncRow = data.getRow(0);
-        for (int rowIndex = 1; rowIndex <= data.getRowCount() - 1; rowIndex++)
-            data.setScale(rowIndex, syncRow.getPoints().get(0) / data.getRow(rowIndex).getPoints().get(0));
-    }
-
     private void addCountryStatsPack(ApplicationData data, RowContent country) {
-
         addCountryPercentageRow(data, ACT, country);
         addCountryPercentageRow(data, CFM, country);
         addCountryPercentageRow(data, RCV, country);
@@ -85,11 +77,12 @@ public class ApplicationService {
 
     public void initializeModel(ApplicationData data) {
         Arrays.stream(RowContent.values()).forEach(rowContent -> addCountryStatsPack(data, rowContent));
-        Arrays.stream(RowContent.values()).forEach(rowContent -> addRow(data, DTH_OF_POP, rowContent));
+        Arrays.stream(RowContent.values()).forEach(rowContent -> addRow(data, DTH_OF_10_POP, rowContent));
         Arrays.stream(RowContent.values()).forEach(rowContent -> addRow(data, R_NEW, rowContent));
         Arrays.stream(RowContent.values()).forEach(rowContent -> addRow(data, DTH_OF_CFM, rowContent));
-        Arrays.stream(RowContent.values()).forEach(rowContent -> addRow(data, INC_NEW, rowContent));
+        Arrays.stream(RowContent.values()).forEach(rowContent -> addRow(data, INC_7D_100K, rowContent));
         Arrays.stream(RowContent.values()).forEach(rowContent -> addRow(data, R_DTH, rowContent));
-        Arrays.stream(RowContent.values()).forEach(rowContent -> addRow(data, INC_DTH, rowContent));
+        Arrays.stream(RowContent.values()).forEach(rowContent -> addRow(data, DTH_7D_100K, rowContent));
+        Arrays.stream(RowContent.values()).forEach(rowContent -> addRow(data, DTH_OF_POP_MID_20, rowContent));
     }
 }

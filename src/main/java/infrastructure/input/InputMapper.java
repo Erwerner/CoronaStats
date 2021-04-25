@@ -1,7 +1,7 @@
 package infrastructure.input;
 
 import com.google.gson.Gson;
-import infrastructure.input.json.DatesJsonFormat;
+import infrastructure.input.json.PointsJsonFormat;
 import infrastructure.input.json.RowJsonFormat;
 
 public class InputMapper {
@@ -12,8 +12,7 @@ public class InputMapper {
         dates = dates.replace("}","\"]}");
         dates = dates.replace(", ","\",\"");
         dates = dates.replaceAll("202[0-1]-[0-9]{2}-[0-9]{2}=","");
-        DatesJsonFormat datesJson = new Gson().fromJson(dates, DatesJsonFormat.class);
+        PointsJsonFormat datesJson = new Gson().fromJson(dates, PointsJsonFormat.class);
         return datesJson.getDates();
     }
-
 }

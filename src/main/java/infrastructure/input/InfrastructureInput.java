@@ -5,6 +5,8 @@ import application.core.RowType;
 import application.service.ApplicationInput;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Function;
 
 import static application.core.RowType.*;
@@ -12,6 +14,7 @@ import static application.core.RowType.*;
 public class InfrastructureInput implements ApplicationInput {
 
     private final API api;
+    private final int deathSinceCount = 9 * 31;
 
     public InfrastructureInput(API api) {
         this.api = api;
@@ -19,28 +22,60 @@ public class InfrastructureInput implements ApplicationInput {
 
     @Override
     public Double[] readPoints(RowType rowType, RowContent rowContent) {
+        Double[] points;
         switch (rowType) {
             case ACT:
-                return getActiveFromAPI(rowContent);
+                points = getActiveFromAPI(rowContent);
+                break;
             case DTH_OF_CFM:
-                return getDeathFromConfirmedFromAPI(rowContent);
+                points = getDeathFromConfirmedFromAPI(rowContent);
+                break;
             case DTH_TO_RCV:
-                return getDeathToRecoveredFromAPI(rowContent);
+                points = getDeathToRecoveredFromAPI(rowContent);
+                break;
             case DTH_OF_POP:
-                return getDeathOfPopulationFromAPI(rowContent);
+                points = getDeathOfPopulationFromAPI(rowContent);
+                break;
+            case DTH_OF_10_POP:
+                points = getDeathOf10PopulationFromAPI(rowContent);
+                break;
             case NEW:
-                return getNewFromAPI(rowContent);
+                points = getNewFromAPI(rowContent);
+                break;
             case R_NEW:
-                return getRFromAPI(rowContent, this::getNewFromAPI);
-            case INC_NEW:
-                return getIncidFromApi(rowContent, this::getNewFromAPI);
+                points = getRFromAPI(rowContent, this::getNewFromAPI);
+                break;
+            case INC_7D_100K:
+                points = getIncidFromApi(rowContent, this::getNewFromAPI);
+                break;
             case R_DTH:
-                return getRFromAPI(rowContent, this::getDeathNewFromAPI);
-            case INC_DTH:
-                return getIncidFromApi(rowContent, this::getDeathNewFromAPI);
+                points = getRFromAPI(rowContent, this::getDeathNewFromAPI);
+                break;
+            case DTH_7D_100K:
+                points = getIncidFromApi(rowContent, this::getDeathNewFromAPI);
+                break;
+            case DTH_OF_POP_MID_20:
+                points = getDeathOf10PopulationMid20FromAPI(rowContent, deathSinceCount);
+                break;
+
             default:
-                return api.getPointsFromApi(rowContent, rowType);
+                points = api.getPointsFromApi(rowContent, rowType);
+                break;
         }
+        return points;
+    }
+
+    protected Double[] getDeathOf10PopulationMid20FromAPI(RowContent rowContent, int deathSinceCount) {
+        List<Double> doubles = new ArrayList<>();
+        Double[] deathOfPopulation = getDeathOfPopulationFromAPI(rowContent);
+        Double deathAtStart = deathOfPopulation[deathSinceCount];
+        Arrays.stream(Arrays.copyOfRange(deathOfPopulation, 0, deathSinceCount )).forEach(
+                it -> {
+                    doubles.add(it - deathAtStart);
+                }
+        );
+        Double[] itemsArray = new Double[doubles.size()];
+        return doubles.toArray(itemsArray);
     }
 
     private Double[] getIncidFromApi(RowContent rowContent, Function<RowContent, Double[]> valueFunction) {
@@ -89,6 +124,15 @@ public class InfrastructureInput implements ApplicationInput {
         Double[] deaths = api.getPointsFromApi(rowContent, DTH);
         for (int i = 0; i <= deaths.length - 1; i++) {
             points.add(deaths[i] / rowContent.getPopulation());
+        }
+        return points.toArray(new Double[0]);
+    }
+
+    private Double[] getDeathOf10PopulationFromAPI(RowContent rowContent) {
+        ArrayList<Double> points = new ArrayList<>();
+        Double[] deaths = api.getPointsFromApi(rowContent, DTH);
+        for (int i = 0; i <= deaths.length - 1; i++) {
+            points.add(deaths[i] * 10000 / rowContent.getPopulation());
         }
         return points.toArray(new Double[0]);
     }

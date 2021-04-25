@@ -1,7 +1,7 @@
 package infrastructure.input;
 
 import com.google.gson.Gson;
-import infrastructure.input.json.DatesJsonFormat;
+import infrastructure.input.json.PointsJsonFormat;
 import infrastructure.input.json.RowJsonFormat;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,7 +25,7 @@ public class InputMapperTest {
         dates = dates.replace("}","\"]}");
         dates = dates.replace(", ","\",\"");
         dates = dates.replaceAll("2020-[0-9]{2}-[0-9]{2}=","");
-        DatesJsonFormat act = new Gson().fromJson(dates, DatesJsonFormat.class);
+        PointsJsonFormat act = new Gson().fromJson(dates, PointsJsonFormat.class);
         System.out.println(act.getDates().toString());
         System.out.println(act.getDates().length);
         assertNotEquals(0, act.getDates().length);
